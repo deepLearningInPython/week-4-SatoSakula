@@ -29,7 +29,7 @@ import numpy as np
 text = "The quick brown fox jumps over the lazy dog!"
 
 # Write a list comprehension to tokenize the text and remove punctuation
-tokens = [word.strip('.,!') for word in text.split()] # Your code here
+tokens = [word.strip('.,!?') for word in text.split()] # Your code here
 
 # Expected output: ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog']
 print(tokens)
@@ -46,7 +46,7 @@ print(tokens)
 # -----------------------------------------------
 def tokenize(string: str) -> list:
     pass # Your code
-    tokens = [word.strip('.,!').lower() for word in string.split()]
+    tokens = [word.strip(',.!?').lower() for word in string.split()]
     return sorted(set(tokens))
 
 print(tokenize(text))
@@ -97,8 +97,8 @@ print(word_frequencies2)
 def token_counts(string: str, k: int = 1) -> dict:
     pass # Your code
     tokens = tokenize(string)
-    frequencies = {word: tokens.count(word) for word, count in frequencies.items() if count >k}
-
+    word_frequencies = {word : tokens.count(word) for word in tokens }
+    return {key: value for key, value in word_frequencies.items() if value > k}
 # test:
 text_hist = {'the': 2, 'quick': 1, 'brown': 1, 'fox': 1, 'jumps': 1, 'over': 1, 'lazy': 1, 'dog': 1}
 all(text_hist[key] == value for key, value in token_counts(text).items())
@@ -189,9 +189,8 @@ all(i2t[t2i[tok]] == tok for tok in t2i) # should be True
 def tokenize_and_encode(documents: list) -> list:
     # Hint: use your make_vocabulary_map and tokenize function
     pass # Your code
-    token_to_id, id_to_token = make_vocabulary_map(documents)
-    encoded_documents = [[token_to_id[token] for tokens in tokenize(doc)] for doc in documents]
-    return encoded_documents, token_to_id, id_to_token
+    token_to_id, id_to_token= make_vocabulary_map(documents)
+    return [[token_to_id[token] for token in tokenize(doc)] for doc in documents], token_to_id, id_to_token
 
 # Test:
 enc, t2i, i2t = tokenize_and_encode([text, 'What a luck we had today!'])
